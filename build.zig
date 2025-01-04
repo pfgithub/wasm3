@@ -14,8 +14,8 @@ pub fn build(b: *std.Build) !void {
 
     if (libwasm3.rootModuleTarget().isWasm()) {
         if (libwasm3.rootModuleTarget().os.tag == .wasi) {
-            libwasm3.root_module.addCMacro("d_m3HasWASI", "");
-            libwasm3.linkSystemLibrary("wasi-emulated-process-clocks");
+            // libwasm3.root_module.addCMacro("d_m3HasWASI", "");
+            // libwasm3.linkSystemLibrary("wasi-emulated-process-clocks");
         }
     }
     libwasm3.addIncludePath(b.path("source"));
@@ -43,7 +43,7 @@ pub fn build(b: *std.Build) !void {
             "m3_parse.c",
         },
         .flags = if (libwasm3.rootModuleTarget().isWasm())
-            &cflags ++ [_][]const u8{
+            &[_][]const u8{
                 "-Xclang",
                 "-target-feature",
                 "-Xclang",
@@ -52,7 +52,6 @@ pub fn build(b: *std.Build) !void {
         else
             &cflags,
     });
-    libwasm3.linkSystemLibrary("m");
     libwasm3.linkLibC();
     b.installArtifact(libwasm3);
 
